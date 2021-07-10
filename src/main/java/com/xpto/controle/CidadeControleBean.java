@@ -1,7 +1,10 @@
 package com.xpto.controle;
 
 import com.xpto.dominio.Cidade;
+import com.xpto.excecao.CidadeExcecao;
+import com.xpto.repositorio.CidadeRepositorio;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,14 +18,21 @@ import java.util.stream.Collectors;
 @Stateless
 public class CidadeControleBean implements CidadeControle {
 
+    @EJB
+    CidadeRepositorio cidadeRepositorio;
+
     @Override
-    public List<String> cidadesCapitais(List<Cidade> cidades) {
+    public List<String> cidadesCapitais() throws CidadeExcecao {
+        List<Cidade> cidades = getCidades();
+        if (cidades.isEmpty() || cidades == null) {
+            throw new CidadeExcecao("Valor vazio");
+        }
 
         List<String> nomeCidades = new ArrayList<>();
         String nomeCidade = "";
 
         for (Cidade cidade : cidades) {
-            if (cidade.isCapital()){
+            if (cidade.isCapital()) {
                 nomeCidade = cidade.getNome();
                 nomeCidades.add(nomeCidade);
             }
@@ -34,9 +44,8 @@ public class CidadeControleBean implements CidadeControle {
     }
 
     @Override
-    public Map<String, Integer> estadoMaiorEMenor(List<Cidade> cidades) {
-
-        Map<String, Integer> estados = estadosEOcorrencia(cidades);
+    public Map<String, Integer> estadoMaiorEMenor() throws CidadeExcecao {
+        Map<String, Integer> estados = estadosEOcorrencia();
         final Map<String, Integer> estadoMaiorEMenor = new HashMap<>();
 
         String uf;
@@ -55,18 +64,44 @@ public class CidadeControleBean implements CidadeControle {
     }
 
     @Override
-    public Map<String, Integer> cidadesPorEstado(List<Cidade> cidades) {
-        return estadosEOcorrencia(cidades);
+    public Map<String, Integer> cidadesPorEstado() throws CidadeExcecao {
+        return estadosEOcorrencia();
     }
 
     @Override
     public Cidade dadosCidadeByIdIBGE(Long id_ibge) {
-
-        return null;
+        return cidadeRepositorio.buscarCidadePeloIBGEId(id_ibge);
     }
 
-    private Map<String, Integer> estadosEOcorrencia(List<Cidade> cidades) {
+    @Override
+    public List<String> cidadesPorEstado(String uf) {
+        List<Cidade> cidades = cidadeRepositorio.buscarCidadesPorParametro(uf);
+        List<String> nomeDasCidades = new ArrayList<>();
+        for (Cidade c : cidades) {
+            nomeDasCidades.add(c.getNome());
+        }
+        return nomeDasCidades;
+    }
 
+    @Override
+    public void adicionarNovaCidade(Cidade cidade) {
+        cidadeRepositorio.adicionarCidade(cidade);
+    }
+
+    @Override
+    public void deletarCidade(Cidade cidade) {
+        cidadeRepositorio.deletarCidade(cidade);
+    }
+
+    private List<Cidade> getCidades() {
+        return cidadeRepositorio.buscarTodasAsCidades();
+    }
+
+    private Map<String, Integer> estadosEOcorrencia() throws CidadeExcecao {
+        List<Cidade> cidades = getCidades();
+        if (cidades.isEmpty() || cidades == null) {
+            throw new CidadeExcecao("Valor vazio");
+        }
         int a, b = 1;
         Map<String, Integer> estados = new TreeMap<String, Integer> (Collections.reverseOrder());
         for (Cidade cidade : cidades) {
@@ -86,7 +121,5 @@ public class CidadeControleBean implements CidadeControle {
 
         return estados;
     }
-
-
 
 }

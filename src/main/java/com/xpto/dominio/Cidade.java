@@ -1,25 +1,45 @@
 package com.xpto.dominio;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-@Table
+@Table(name = "Cidade")
 public class Cidade implements Serializable {
 
     private static final long serialVersionUID = 1010298644392687678L;
 
+    @Column(name="ibge_id")
     private Long ibge_id;
+
+    @Column(name="uf")
     private String uf;
+
+    @Column(name="nome")
     private String nome;
+
+    @Column(name="capital")
     private boolean capital;
+
+    @Column(name="longitude")
     private BigDecimal longitude;
+
+    @Column(name="latitude")
     private BigDecimal latitude;
+
+    @Column(name="no_accents")
     private String no_accents;
+
+    @Column(name="nome_alternativo")
     private String nome_alternativo;
+
+    @Column(name="microregion")
     private String microregion;
+
+    @Column(name="mesoregion")
     private String mesoregion;
 
     public Cidade() {
