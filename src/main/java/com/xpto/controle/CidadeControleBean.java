@@ -3,9 +3,9 @@ package com.xpto.controle;
 import com.xpto.dominio.Cidade;
 import com.xpto.excecao.CidadeExcecao;
 import com.xpto.repositorio.CidadeRepositorio;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,11 +15,11 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-@Stateless
+@Service
 public class CidadeControleBean implements CidadeControle {
 
-    @EJB
-    CidadeRepositorio cidadeRepositorio;
+    @Autowired
+    private CidadeRepositorio cidadeRepositorio;
 
     @Override
     public List<String> cidadesCapitais() throws CidadeExcecao {
@@ -48,12 +48,9 @@ public class CidadeControleBean implements CidadeControle {
         Map<String, Integer> estados = estadosEOcorrencia();
         final Map<String, Integer> estadoMaiorEMenor = new HashMap<>();
 
-        String uf;
-        Integer n;
-
         // maior
-        uf = estados.entrySet().iterator().next().getKey();
-        n = estados.entrySet().iterator().next().getValue();
+        String uf = estados.entrySet().iterator().next().getKey();
+        Integer n = estados.entrySet().iterator().next().getValue();
         estadoMaiorEMenor.put("Estado Maior: "+uf, n);
         // menor
         uf = estados.entrySet().stream().skip(estados.size() - 1).findFirst().get().getKey();
@@ -69,7 +66,7 @@ public class CidadeControleBean implements CidadeControle {
     }
 
     @Override
-    public Cidade dadosCidadeByIdIBGE(Long id_ibge) {
+    public Cidade dadosCidadeByIdIBGE(int id_ibge) {
         return cidadeRepositorio.buscarCidadePeloIBGEId(id_ibge);
     }
 
@@ -89,8 +86,14 @@ public class CidadeControleBean implements CidadeControle {
     }
 
     @Override
-    public void deletarCidade(Cidade cidade) {
-        cidadeRepositorio.deletarCidade(cidade);
+    public boolean deletarCidade(Long id_ibge) {
+        int i = cidadeRepositorio.deletarCidade(id_ibge);
+        return Boolean.FALSE;
+    }
+
+    @Override
+    public Long quantidadeDeRegistro() {
+        return Long.valueOf(getCidades().size());
     }
 
     private List<Cidade> getCidades() {

@@ -2,6 +2,9 @@ package com.xpto.dominio;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -12,8 +15,9 @@ public class Cidade implements Serializable {
 
     private static final long serialVersionUID = 1010298644392687678L;
 
-    @Column(name="ibge_id")
-    private Long ibge_id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int ibge_id;
 
     @Column(name="uf")
     private String uf;
@@ -21,7 +25,7 @@ public class Cidade implements Serializable {
     @Column(name="nome")
     private String nome;
 
-    @Column(name="capital")
+    @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private boolean capital;
 
     @Column(name="longitude")
@@ -45,7 +49,7 @@ public class Cidade implements Serializable {
     public Cidade() {
     }
 
-    public Cidade(Long ibge_id, String uf, String nome, boolean capital, BigDecimal longitude, BigDecimal latitude, String no_accents, String nome_alternativo, String microregion, String mesoregion) {
+    public Cidade(int ibge_id, String uf, String nome, boolean capital, BigDecimal longitude, BigDecimal latitude, String no_accents, String nome_alternativo, String microregion, String mesoregion) {
         this.ibge_id = ibge_id;
         this.uf = uf;
         this.nome = nome;
@@ -58,11 +62,11 @@ public class Cidade implements Serializable {
         this.mesoregion = mesoregion;
     }
 
-    public Long getIbge_id() {
+    public int getIbge_id() {
         return ibge_id;
     }
 
-    public void setIbge_id(Long ibge_id) {
+    public void setIbge_id(int ibge_id) {
         this.ibge_id = ibge_id;
     }
 

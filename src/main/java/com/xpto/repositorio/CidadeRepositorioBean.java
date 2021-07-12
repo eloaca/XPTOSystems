@@ -1,31 +1,44 @@
 package com.xpto.repositorio;
 
 import com.xpto.dominio.Cidade;
+import org.hibernate.transform.Transformers;
+import org.springframework.stereotype.Repository;
 
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
-@Stateless
+@Repository
 public class CidadeRepositorioBean implements CidadeRepositorio {
 
     @PersistenceContext
-    private final EntityManager em;
-
-    public CidadeRepositorioBean(EntityManager em) {
-        this.em = em;
-    }
-
+    private EntityManager em;
 
     @Override
-    public Cidade buscarCidadePeloIBGEId(Long idIBGE) {
-        return em.find(Cidade.class, idIBGE);
+    public Cidade buscarCidadePeloIBGEId(int idIBGE) {
+        try {
+            return em.find(Cidade.class, idIBGE);
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
     public List<Cidade> buscarTodasAsCidades() {
-        return null;
+        StringBuilder jpql = new StringBuilder()
+            .append("SELECT * FROM Cidade c");
+
+        Query query = em.createNativeQuery(jpql.toString())
+                .unwrap(org.hibernate.Query.class)
+                .setResultTransformer(Transformers.aliasToBean(Cidade.class));
+
+        try {
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
@@ -36,8 +49,20 @@ public class CidadeRepositorioBean implements CidadeRepositorio {
     }
 
     @Override
-    public List<Cidade> buscarCidadesPorParametro(String... strings) {
-        return null;
+    public List<Cidade> buscarCidadesPorParametro(String uf) {
+        StringBuilder jpql = new StringBuilder();
+            jpql.append("SELECT c.* FROM " +Cidade.class);
+            jpql.append("CIDADE c ");
+            jpql.append("WHERE c.uf = :uf ");
+
+        Query query = em.createQuery(jpql.toString());
+            query.setParameter("uf", uf);
+
+        try {
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
@@ -47,7 +72,15 @@ public class CidadeRepositorioBean implements CidadeRepositorio {
     }
 
     @Override
-    public void deletarCidade(Cidade cidade) {
+    public int deletarCidade(Long idIBGE) {
+        StringBuilder jpql = new StringBuilder();
+            jpql.append("DELETE FROM CIDADE c ");
+            jpql.append("WHERE c.id_ibge = :idIBGE ");
+
+        Query query = em.createQuery(jpql.toString());
+            query.setParameter("idIBGE", idIBGE);
+
+        return query.executeUpdate();
 
     }
 }

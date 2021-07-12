@@ -17,11 +17,13 @@ public interface CidadeControle {
 
     Map<String, Integer> cidadesPorEstado() throws CidadeExcecao;
 
-    Cidade dadosCidadeByIdIBGE(Long id_ibge);
+    Cidade dadosCidadeByIdIBGE(int id_ibge);
 
     List<String> cidadesPorEstado(String uf);
 
     void adicionarNovaCidade(Cidade cidade);
 
-    void deletarCidade(Cidade cidade);
+    boolean deletarCidade(Long id_ibge);
+
+    Long quantidadeDeRegistro();
 }
