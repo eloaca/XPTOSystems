@@ -11,7 +11,7 @@ import java.util.Map;
 @Local
 public interface CidadeControle {
 
-    List<String> cidadesCapitais() throws CidadeExcecao;
+    List<String> cidadesQueSaoCapitais() throws CidadeExcecao;
 
     Map<String, Integer> estadoMaiorEMenor() throws CidadeExcecao;
 

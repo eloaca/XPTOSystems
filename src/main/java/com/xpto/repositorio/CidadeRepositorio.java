@@ -17,4 +17,6 @@ public interface CidadeRepositorio {
     void adicionarCidade(Cidade cidade);
 
     int deletarCidade(Long idIBGE);
+
+    List<Cidade> buscarCidadesCapitais();
 }

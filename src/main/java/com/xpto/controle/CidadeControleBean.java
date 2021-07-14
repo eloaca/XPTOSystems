@@ -22,24 +22,19 @@ public class CidadeControleBean implements CidadeControle {
     private CidadeRepositorio cidadeRepositorio;
 
     @Override
-    public List<String> cidadesCapitais() throws CidadeExcecao {
-        List<Cidade> cidades = getCidades();
-        if (cidades.isEmpty() || cidades == null) {
-            throw new CidadeExcecao("Valor vazio");
-        }
+    public List<String> cidadesQueSaoCapitais() throws CidadeExcecao {
+        List<Cidade> cidades = cidadeRepositorio.buscarCidadesCapitais();
+        if (cidades.isEmpty() || cidades == null)
+            throw new CidadeExcecao("Nao foi encontrado nenhum resultado para sua busca");
 
         List<String> nomeCidades = new ArrayList<>();
-        String nomeCidade = "";
+        String nomeCidade;
 
         for (Cidade cidade : cidades) {
-            if (cidade.isCapital()) {
-                nomeCidade = cidade.getNome();
-                nomeCidades.add(nomeCidade);
-            }
+            nomeCidade = cidade.getNome();
+            nomeCidades.add(nomeCidade);
         }
-
         nomeCidades.sort(String::compareTo);
-
         return nomeCidades;
     }
 

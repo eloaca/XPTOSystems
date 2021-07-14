@@ -83,4 +83,21 @@ public class CidadeRepositorioBean implements CidadeRepositorio {
         return query.executeUpdate();
 
     }
+
+    @Override
+    public List<Cidade> buscarCidadesCapitais() {
+        StringBuilder jpql = new StringBuilder()
+                .append("SELECT * FROM Cidade c")
+                .append(" WHERE c.capital = true");
+
+        Query query = em.createNativeQuery(jpql.toString())
+                .unwrap(org.hibernate.Query.class)
+                .setResultTransformer(Transformers.aliasToBean(Cidade.class));
+
+        try {
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 }

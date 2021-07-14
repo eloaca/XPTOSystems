@@ -1,6 +1,5 @@
 package com.xpto.controle;
 
-import com.xpto.dominio.Cidade;
 import com.xpto.excecao.CidadeExcecao;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ejb.EJB;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -22,12 +22,12 @@ public class Exemplo {
         return ResponseEntity.ok("Hello World!");
     }
 
-    @GetMapping("/cidadesCapitais")
-    public List<String> teste() throws CidadeExcecao {
+    @GetMapping("/cidadesQueSaoCapitais")
+    public List<String> teste() {
         try {
-            return cidadeControle.cidadesCapitais();
-        }catch (CidadeExcecao e) {
-            return null;
+            return cidadeControle.cidadesQueSaoCapitais();
+        } catch (CidadeExcecao e) {
+            return Collections.singletonList(e.getMensagemExcecao());
         }
     }
 
