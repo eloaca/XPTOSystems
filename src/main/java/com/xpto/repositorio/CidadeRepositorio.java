@@ -15,7 +15,11 @@ public interface CidadeRepositorio {
 
     void adicionarCidade(Cidade cidade) throws SQLException;
 
-    int deletarCidade(int idIBGE);
+    int deletarCidade(int idIBGE) throws SQLException;
 
     List<Cidade> buscarCidadesCapitais();
+
+    List<Object> buscarQtoCidadesPorEstado();
+
+    Long qtoDeRegistros();
 }

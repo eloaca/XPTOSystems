@@ -8,16 +8,15 @@ import javax.ejb.Local;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 @Local
 public interface CidadeControle {
 
     List<String> cidadesQueSaoCapitais() throws CidadeExcecao;
 
-    Map<String, Integer> estadoMaiorEMenor() throws CidadeExcecao;
+    List<Object> estadoMaiorEMenor() throws CidadeExcecao;
 
-    Map<String, Integer> cidadesPorEstado() throws CidadeExcecao;
+    List<Object> cidadesPorEstado() throws CidadeExcecao;
 
     Cidade dadosCidadeByIdIBGE(int id_ibge) throws CidadeExcecao;
 
@@ -25,7 +24,7 @@ public interface CidadeControle {
 
     void adicionarNovaCidade(Cidade cidade) throws SQLException;
 
-    boolean deletarCidade(int id_ibge);
+    boolean deletarCidade(int id_ibge) throws SQLException;
 
     Long quantidadeDeRegistro();
 

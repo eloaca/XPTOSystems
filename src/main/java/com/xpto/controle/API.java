@@ -17,6 +17,7 @@ public class API {
     @EJB
     CidadeControle cidadeControle;
 
+    /*
     @GetMapping("salvarCidadesCsv")
     public Object salvarCsv(){
         try {
@@ -24,8 +25,9 @@ public class API {
         } catch (IOException | SQLException e) {
             return e.getMessage();
         }
-        return "Nao foi possivel salvar o arquivo CSV";
+        return "Arquivo CSV salvo com sucesso";
     }
+     */
 
     @GetMapping("/cidadesQueSaoCapitais")
     public Object cidadesQueSaoCapitais() {
@@ -64,7 +66,7 @@ public class API {
     }
 
     @GetMapping("/dadosCidadeById/{idIBGE}")
-    public Object dadosCidadeById (@PathVariable int idIBGE){
+    public Object dadosCidadeById(@PathVariable int idIBGE){
         try {
             return cidadeControle.dadosCidadeByIdIBGE(idIBGE);
         } catch (CidadeExcecao e){
@@ -73,7 +75,7 @@ public class API {
     }
 
     @GetMapping("/dadosCidadeByUF/{uf}")
-    public Object dadosCidadeByUF (@PathVariable String uf){
+    public Object dadosCidadeByUF(@PathVariable String uf){
         try {
             return cidadeControle.cidadesPorEstado(uf);
         } catch (CidadeExcecao e){
@@ -82,7 +84,11 @@ public class API {
     }
 
     public Object deletarUmaCidade(@PathVariable int idIBGE){
-        return cidadeControle.deletarCidade(idIBGE);
+        try {
+            return cidadeControle.deletarCidade(idIBGE);
+        } catch (SQLException e) {
+            throw new CidadeExcecao("Nao foi possivel executar esta acao: "+e.getMessage());
+        }
     }
 
 }
