@@ -1,27 +1,27 @@
 package com.xpto.util;
 
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.opencsv.exceptions.CsvException;
 import com.xpto.dominio.Cidade;
-import org.apache.tomcat.util.http.fileupload.FileItem;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class CSVUtil {
 
-    private List<Cidade> lerEExtrairCSV(FileItem csv) throws IOException, CsvException {
-        Reader reader = Files.newBufferedReader((Path) csv);
+    public List<Cidade> lerEExtrairCSV() throws IOException {
+
+        String file = "src/main/resources/Cidades.csv";
+        Reader reader = Files.newBufferedReader(Paths.get(file));
         CsvToBean<Cidade> csvToBean = new CsvToBeanBuilder(reader)
                 .withType(Cidade.class)
+                .withSeparator(',')
+                .withIgnoreLeadingWhiteSpace(true)
+                .withIgnoreEmptyLine(true)
                 .build();
         return csvToBean.parse();
     }
-
 }

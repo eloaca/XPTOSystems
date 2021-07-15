@@ -1,5 +1,6 @@
 package com.xpto.dominio;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,29 +17,29 @@ public class Cidade implements Serializable {
     private static final long serialVersionUID = 1010298644392687678L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="ibge_id")
     private int ibge_id;
 
     @Column(name="uf")
     private String uf;
 
-    @Column(name="nome")
-    private String nome;
+    @Column(name="name")
+    private String name;
 
-    @Column(nullable = false, columnDefinition = "TINYINT(1)")
+    @Column(name="capital", columnDefinition = "TINYINT(1)")
     private boolean capital;
 
-    @Column(name="longitude")
-    private BigDecimal longitude;
+    @Column(name="lon")
+    private BigDecimal lon;
 
-    @Column(name="latitude")
-    private BigDecimal latitude;
+    @Column(name="lat")
+    private BigDecimal lat;
 
     @Column(name="no_accents")
     private String no_accents;
 
-    @Column(name="nome_alternativo")
-    private String nome_alternativo;
+    @Column(name="alternative_names")
+    private String alternative_names;
 
     @Column(name="microregion")
     private String microregion;
@@ -49,15 +50,16 @@ public class Cidade implements Serializable {
     public Cidade() {
     }
 
-    public Cidade(int ibge_id, String uf, String nome, boolean capital, BigDecimal longitude, BigDecimal latitude, String no_accents, String nome_alternativo, String microregion, String mesoregion) {
+    public Cidade(int ibge_id, String uf, String name, boolean capital, BigDecimal lon, BigDecimal lat,
+                  String no_accents, String alternative_names, String microregion, String mesoregion) {
         this.ibge_id = ibge_id;
         this.uf = uf;
-        this.nome = nome;
+        this.name = name;
         this.capital = capital;
-        this.longitude = longitude;
-        this.latitude = latitude;
+        this.lon = lon;
+        this.lat = lat;
         this.no_accents = no_accents;
-        this.nome_alternativo = nome_alternativo;
+        this.alternative_names = alternative_names;
         this.microregion = microregion;
         this.mesoregion = mesoregion;
     }
@@ -78,12 +80,12 @@ public class Cidade implements Serializable {
         this.uf = uf;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isCapital() {
@@ -94,20 +96,20 @@ public class Cidade implements Serializable {
         this.capital = capital;
     }
 
-    public BigDecimal getLongitude() {
-        return longitude;
+    public BigDecimal getLon() {
+        return lon;
     }
 
-    public void setLongitude(BigDecimal longitude) {
-        this.longitude = longitude;
+    public void setLon(BigDecimal lon) {
+        this.lon = lon;
     }
 
-    public BigDecimal getLatitude() {
-        return latitude;
+    public BigDecimal getLat() {
+        return lat;
     }
 
-    public void setLatitude(BigDecimal latitude) {
-        this.latitude = latitude;
+    public void setLat(BigDecimal lat) {
+        this.lat = lat;
     }
 
     public String getNo_accents() {
@@ -118,12 +120,12 @@ public class Cidade implements Serializable {
         this.no_accents = no_accents;
     }
 
-    public String getNome_alternativo() {
-        return nome_alternativo;
+    public String getAlternative_names() {
+        return alternative_names;
     }
 
-    public void setNome_alternativo(String nome_alternativo) {
-        this.nome_alternativo = nome_alternativo;
+    public void setAlternative_names(String alternative_names) {
+        this.alternative_names = alternative_names;
     }
 
     public String getMicroregion() {
@@ -141,5 +143,4 @@ public class Cidade implements Serializable {
     public void setMesoregion(String mesoregion) {
         this.mesoregion = mesoregion;
     }
-
 }

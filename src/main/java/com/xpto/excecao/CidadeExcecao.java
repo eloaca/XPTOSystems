@@ -1,6 +1,6 @@
 package com.xpto.excecao;
 
-import java.util.List;
+import java.util.Map;
 
 public class CidadeExcecao extends RuntimeException {
 

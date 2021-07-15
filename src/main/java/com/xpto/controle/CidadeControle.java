@@ -5,6 +5,8 @@ import com.xpto.excecao.CidadeExcecao;
 
 import javax.ejb.Local;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,13 +19,15 @@ public interface CidadeControle {
 
     Map<String, Integer> cidadesPorEstado() throws CidadeExcecao;
 
-    Cidade dadosCidadeByIdIBGE(int id_ibge);
+    Cidade dadosCidadeByIdIBGE(int id_ibge) throws CidadeExcecao;
 
     List<String> cidadesPorEstado(String uf);
 
-    void adicionarNovaCidade(Cidade cidade);
+    void adicionarNovaCidade(Cidade cidade) throws SQLException;
 
-    boolean deletarCidade(Long id_ibge);
+    boolean deletarCidade(int id_ibge);
 
     Long quantidadeDeRegistro();
+
+    void salvarCidadesCsv() throws IOException, SQLException;
 }

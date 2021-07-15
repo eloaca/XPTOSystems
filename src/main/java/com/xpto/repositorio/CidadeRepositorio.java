@@ -2,6 +2,7 @@ package com.xpto.repositorio;
 
 import com.xpto.dominio.Cidade;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface CidadeRepositorio {
@@ -10,13 +11,11 @@ public interface CidadeRepositorio {
 
     List<Cidade> buscarTodasAsCidades();
 
-    void salvarTodasCidades(List<Cidade> cidades);
-
     List<Cidade> buscarCidadesPorParametro(String uf);
 
-    void adicionarCidade(Cidade cidade);
+    void adicionarCidade(Cidade cidade) throws SQLException;
 
-    int deletarCidade(Long idIBGE);
+    int deletarCidade(int idIBGE);
 
     List<Cidade> buscarCidadesCapitais();
 }

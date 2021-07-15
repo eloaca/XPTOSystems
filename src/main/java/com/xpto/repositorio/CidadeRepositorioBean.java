@@ -8,8 +8,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.util.List;
 
+@Transactional
 @Repository
 public class CidadeRepositorioBean implements CidadeRepositorio {
 
@@ -18,8 +21,16 @@ public class CidadeRepositorioBean implements CidadeRepositorio {
 
     @Override
     public Cidade buscarCidadePeloIBGEId(int idIBGE) {
+        StringBuilder jpql = new StringBuilder()
+                .append("SELECT * FROM Cidade c")
+                .append(" WHERE c.ibge_id = :idIBGE");
+
         try {
-            return em.find(Cidade.class, idIBGE);
+            return (Cidade) em.createNativeQuery(jpql.toString())
+                    .unwrap(org.hibernate.Query.class)
+                    .setResultTransformer(Transformers.aliasToBean(Cidade.class))
+                    .setParameter("idIBGE", idIBGE).getSingleResult();
+
         } catch (NoResultException e) {
             return null;
         }
@@ -30,55 +41,46 @@ public class CidadeRepositorioBean implements CidadeRepositorio {
         StringBuilder jpql = new StringBuilder()
             .append("SELECT * FROM Cidade c");
 
-        Query query = em.createNativeQuery(jpql.toString())
-                .unwrap(org.hibernate.Query.class)
-                .setResultTransformer(Transformers.aliasToBean(Cidade.class));
-
         try {
-            return query.getResultList();
+            return em.createNativeQuery(jpql.toString())
+                    .unwrap(org.hibernate.Query.class)
+                    .setResultTransformer(Transformers.aliasToBean(Cidade.class)).getResultList();
         } catch (NoResultException e) {
             return null;
-        }
-    }
-
-    @Override
-    public void salvarTodasCidades(List<Cidade> cidades) {
-        for (Cidade c : cidades) {
-            em.persist(c);
         }
     }
 
     @Override
     public List<Cidade> buscarCidadesPorParametro(String uf) {
-        StringBuilder jpql = new StringBuilder();
-            jpql.append("SELECT c.* FROM " +Cidade.class);
-            jpql.append("CIDADE c ");
-            jpql.append("WHERE c.uf = :uf ");
-
-        Query query = em.createQuery(jpql.toString());
-            query.setParameter("uf", uf);
+        StringBuilder jpql = new StringBuilder()
+                .append("SELECT * FROM Cidade c ")
+                .append("WHERE c.uf = :uf");
 
         try {
-            return query.getResultList();
+            return em.createNativeQuery(jpql.toString())
+                    .unwrap(org.hibernate.Query.class)
+                    .setResultTransformer(Transformers.aliasToBean(Cidade.class))
+                    .setParameter("uf", uf)
+                    .getResultList();
         } catch (NoResultException e) {
             return null;
         }
     }
 
     @Override
-    public void adicionarCidade(Cidade cidade) {
+    public void adicionarCidade(Cidade cidade) throws SQLException {
         em.merge(cidade);
         em.persist(cidade);
     }
 
     @Override
-    public int deletarCidade(Long idIBGE) {
-        StringBuilder jpql = new StringBuilder();
-            jpql.append("DELETE FROM CIDADE c ");
-            jpql.append("WHERE c.id_ibge = :idIBGE ");
+    public int deletarCidade(int idIBGE) {
+        StringBuilder jpql = new StringBuilder()
+                .append("DELETE FROM CIDADE c ")
+                .append("WHERE c.id_ibge = :idIBGE ");
 
-        Query query = em.createQuery(jpql.toString());
-            query.setParameter("idIBGE", idIBGE);
+        Query query = em.createNativeQuery(jpql.toString())
+                .setParameter("idIBGE", idIBGE);
 
         return query.executeUpdate();
 
@@ -90,12 +92,10 @@ public class CidadeRepositorioBean implements CidadeRepositorio {
                 .append("SELECT * FROM Cidade c")
                 .append(" WHERE c.capital = true");
 
-        Query query = em.createNativeQuery(jpql.toString())
-                .unwrap(org.hibernate.Query.class)
-                .setResultTransformer(Transformers.aliasToBean(Cidade.class));
-
         try {
-            return query.getResultList();
+            return em.createNativeQuery(jpql.toString())
+                    .unwrap(org.hibernate.Query.class)
+                    .setResultTransformer(Transformers.aliasToBean(Cidade.class)).getResultList();
         } catch (NoResultException e) {
             return null;
         }

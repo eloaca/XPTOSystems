@@ -3,9 +3,12 @@ package com.xpto.controle;
 import com.xpto.dominio.Cidade;
 import com.xpto.excecao.CidadeExcecao;
 import com.xpto.repositorio.CidadeRepositorio;
+import com.xpto.util.CSVUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,7 +34,7 @@ public class CidadeControleBean implements CidadeControle {
         String nomeCidade;
 
         for (Cidade cidade : cidades) {
-            nomeCidade = cidade.getNome();
+            nomeCidade = cidade.getName();
             nomeCidades.add(nomeCidade);
         }
         nomeCidades.sort(String::compareTo);
@@ -41,6 +44,9 @@ public class CidadeControleBean implements CidadeControle {
     @Override
     public Map<String, Integer> estadoMaiorEMenor() throws CidadeExcecao {
         Map<String, Integer> estados = estadosEOcorrencia();
+        if (estados.isEmpty() || estados == null)
+            throw new CidadeExcecao("Nao foi encontrado nenhum resultado para sua busca");
+
         final Map<String, Integer> estadoMaiorEMenor = new HashMap<>();
 
         // maior
@@ -61,34 +67,55 @@ public class CidadeControleBean implements CidadeControle {
     }
 
     @Override
-    public Cidade dadosCidadeByIdIBGE(int id_ibge) {
-        return cidadeRepositorio.buscarCidadePeloIBGEId(id_ibge);
+    public Cidade dadosCidadeByIdIBGE(int id_ibge) throws CidadeExcecao {
+        try {
+            return cidadeRepositorio.buscarCidadePeloIBGEId(id_ibge);
+        } catch (CidadeExcecao e){
+            throw new CidadeExcecao("Excecao lancada: "+e.getCause());
+        }
     }
 
     @Override
     public List<String> cidadesPorEstado(String uf) {
         List<Cidade> cidades = cidadeRepositorio.buscarCidadesPorParametro(uf);
+        if (cidades.isEmpty() || cidades == null)
+            throw new CidadeExcecao("Nao foi encontrado nenhum resultado para sua busca");
+
         List<String> nomeDasCidades = new ArrayList<>();
         for (Cidade c : cidades) {
-            nomeDasCidades.add(c.getNome());
+            nomeDasCidades.add(c.getName());
         }
         return nomeDasCidades;
     }
 
     @Override
-    public void adicionarNovaCidade(Cidade cidade) {
+    public void adicionarNovaCidade(Cidade cidade) throws SQLException {
         cidadeRepositorio.adicionarCidade(cidade);
     }
 
     @Override
-    public boolean deletarCidade(Long id_ibge) {
+    public boolean deletarCidade(int id_ibge) {
         int i = cidadeRepositorio.deletarCidade(id_ibge);
         return Boolean.FALSE;
     }
 
     @Override
     public Long quantidadeDeRegistro() {
-        return Long.valueOf(getCidades().size());
+        try {
+            return Long.valueOf(getCidades().size());
+        } catch (CidadeExcecao e){
+            throw new CidadeExcecao("Excecao lancada" +e.getCause());
+        }
+    }
+
+    @Override
+    public void salvarCidadesCsv() throws IOException, SQLException {
+        CSVUtil util = new CSVUtil();
+        List<Cidade> cidades = util.lerEExtrairCSV();
+        for (Cidade c : cidades) {
+            adicionarNovaCidade(c);
+        }
+
     }
 
     private List<Cidade> getCidades() {
@@ -98,16 +125,22 @@ public class CidadeControleBean implements CidadeControle {
     private Map<String, Integer> estadosEOcorrencia() throws CidadeExcecao {
         List<Cidade> cidades = getCidades();
         if (cidades.isEmpty() || cidades == null) {
-            throw new CidadeExcecao("Valor vazio");
+            throw new CidadeExcecao("Nenhum valor foi encontrado");
         }
         int a, b = 1;
         Map<String, Integer> estados = new TreeMap<String, Integer> (Collections.reverseOrder());
         for (Cidade cidade : cidades) {
-            if (estados.containsKey(cidade.getUf())) {
-                a = estados.get(cidade.getUf()) + b;
-                estados.put(cidade.getUf() + " -> ", new Integer(a));
-            } else {
+            if (estados.isEmpty()){
                 estados.put(cidade.getUf() + " -> ", new Integer(b));
+            } else {
+                for (Map.Entry<String, Integer> estado : estados.entrySet()) {
+                    if (estado.getKey().contains(cidade.getUf())) {
+                        a = estado.getValue() + b;
+                        estados.put(cidade.getUf() + " -> ", new Integer(a));
+                    } else {
+                        estados.put(cidade.getUf() + " -> ", new Integer(b));
+                    }
+                }
             }
         }
 
