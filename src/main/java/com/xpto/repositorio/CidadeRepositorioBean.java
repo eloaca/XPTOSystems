@@ -60,10 +60,10 @@ public class CidadeRepositorioBean implements CidadeRepositorio {
     }
 
     @Override
-    public int deletarCidade(int idIBGE) throws SQLException {
+    public int deletarCidade(int idIBGE) {
         StringBuilder jpql = new StringBuilder()
                 .append("DELETE FROM Cidade c ")
-                .append("WHERE c.id_ibge = :idIBGE");
+                .append("WHERE c.ibge_id = :idIBGE");
 
         return em.createQuery(jpql.toString())
                 .setParameter("idIBGE", idIBGE)

@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ejb.EJB;
-import java.io.IOException;
-import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/api/xpto")
@@ -16,7 +14,7 @@ public class API {
 
     @EJB
     CidadeControle cidadeControle;
-
+/*
     @GetMapping("salvarCidadesCsv")
     public Object salvarCsv(){
         try {
@@ -26,7 +24,7 @@ public class API {
         }
         return "Arquivo CSV salvo com sucesso";
     }
-
+ */
     @GetMapping("/cidadesQueSaoCapitais")
     public Object cidadesQueSaoCapitais() {
         try {
@@ -81,12 +79,9 @@ public class API {
         }
     }
 
+    @GetMapping("/deletarCidade/{idIBGE}")
     public Object deletarUmaCidade(@PathVariable int idIBGE){
-        try {
-            return cidadeControle.deletarCidade(idIBGE);
-        } catch (SQLException e) {
-            throw new CidadeExcecao("Nao foi possivel executar esta acao: "+e.getMessage());
-        }
+        return cidadeControle.deletarCidade(idIBGE);
     }
 
 }

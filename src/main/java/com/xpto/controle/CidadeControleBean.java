@@ -7,6 +7,7 @@ import com.xpto.util.CSVUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.PersistenceException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -82,9 +83,10 @@ public class CidadeControleBean implements CidadeControle {
     }
 
     @Override
-    public boolean deletarCidade(int id_ibge) throws SQLException {
-        int i = cidadeRepositorio.deletarCidade(id_ibge);
-        return Boolean.FALSE;
+    public boolean deletarCidade(int id_ibge) {
+        if (cidadeRepositorio.deletarCidade(id_ibge) == 1)
+            return true;
+        return false;
     }
 
     @Override

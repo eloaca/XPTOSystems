@@ -24,7 +24,7 @@ public interface CidadeControle {
 
     void adicionarNovaCidade(Cidade cidade) throws SQLException;
 
-    boolean deletarCidade(int id_ibge) throws SQLException;
+    boolean deletarCidade(int id_ibge);
 
     Long quantidadeDeRegistro();
 
