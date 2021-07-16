@@ -19,14 +19,9 @@ public class CidadeRepositorioBean implements CidadeRepositorio {
 
     @Override
     public Cidade buscarCidadePeloIBGEId(int idIBGE) {
-        StringBuilder jpql = new StringBuilder()
-                .append("SELECT c FROM Cidade c ")
-                .append("WHERE c.ibge_id = :idIBGE");
         try {
-            return (Cidade) em.createQuery(jpql.toString())
-                    .setParameter("idIBGE", idIBGE)
-                    .getSingleResult();
-        } catch (NoResultException e) {
+            return em.find(Cidade.class, idIBGE);
+        } catch (NoResultException e){
             return null;
         }
     }

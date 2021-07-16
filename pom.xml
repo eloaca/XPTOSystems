@@ -45,12 +45,13 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
 		<dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
-        </dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>7.4.0</version>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.easymock</groupId>
@@ -80,11 +81,13 @@
 			<version>3.0.1</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>5.2.6.Final</version>
+			<version>5.5.3.Final</version>
 		</dependency>
+
 
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
 		<dependency>
@@ -122,22 +125,29 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 
 	<profiles>
 		<profile>
 			<id>tst</id>
-			<properties>
-				<activatedProperties>tst</activatedProperties>
-			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
+			<properties>
+				<spring.profiles.active>tst</spring.profiles.active>
+			</properties>
 		</profile>
 		<profile>
 			<id>prod</id>
 			<properties>
-				<activatedProperties>prod</activatedProperties>
+				<spring.profiles.active>prod</spring.profiles.active>
 			</properties>
 		</profile>
 	</profiles>

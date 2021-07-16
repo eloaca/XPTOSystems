@@ -17,7 +17,6 @@ public class API {
     @EJB
     CidadeControle cidadeControle;
 
-    /*
     @GetMapping("salvarCidadesCsv")
     public Object salvarCsv(){
         try {
@@ -27,7 +26,6 @@ public class API {
         }
         return "Arquivo CSV salvo com sucesso";
     }
-     */
 
     @GetMapping("/cidadesQueSaoCapitais")
     public Object cidadesQueSaoCapitais() {
