@@ -30,5 +30,9 @@ public interface CidadeControle {
 
     void salvarCidadesCsv() throws IOException, SQLException;
 
-    List<Cidade> lerArquivoCSV(String csv);
+    List<Cidade> lerArquivoCSV();
+
+    List<String> stringPorColuna(String colunaQueEuQuero, String palavraQueProcuro);
+
+    int registroPorColuna(String colunaQueEuQuero);
 }

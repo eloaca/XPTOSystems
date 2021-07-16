@@ -13,11 +13,15 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CSVUtil {
 
-    public List<Cidade> lerEExtrairCSV(String file) throws IOException {
+    private String file = "src/main/resources/Cidades.csv";
+
+    public List<Cidade> lerEExtrairCSV() throws IOException {
 
         Reader reader = Files.newBufferedReader(Paths.get(file));
         CsvToBean<Cidade> csvToBean = new CsvToBeanBuilder(reader)
@@ -29,9 +33,36 @@ public class CSVUtil {
         return csvToBean.parse();
     }
 
-    public List<String> lerColunaCSV(String colunaQueEuQuero, String palavraQueProcuro) throws IOException, CsvValidationException, CidadeExcecao {
+    public int registroPorColunaCSV(String colunaQueEuQuero) throws IOException, CsvValidationException {
 
-        String file = "src/main/resources/Cidades.csv";
+        CSVReader c = new CSVReader(new FileReader(file));
+        String[] linha;
+        int coluna = 0, contador = 0;
+        Set<String> stringsDaquelaColuna = new HashSet<>();
+
+        for (int y = 0; y < 1; y++){
+            linha = c.readNext();
+            for (int i = 0; i < linha.length; i++) {
+                if (linha[i].equals(colunaQueEuQuero)) {
+                    coluna = i;
+                    break;
+                }
+            }
+        }
+
+        while ((linha = c.readNext()) != null) {
+            String palavraDaColuna = linha[coluna];
+            if (contador == 0) {
+                stringsDaquelaColuna.add(palavraDaColuna);
+            }
+            contador++;
+            stringsDaquelaColuna.add(palavraDaColuna);
+        }
+        return stringsDaquelaColuna.size();
+    }
+
+    public List<String> lerColunaEFiltrarStringCSV(String colunaQueEuQuero, String palavraQueProcuro) throws IOException, CsvValidationException {
+
         CSVReader c = new CSVReader(new FileReader(file));
         String[] linha;
         int contador = 0, coluna = 0;
@@ -44,13 +75,10 @@ public class CSVUtil {
                         coluna = i;
                         break;
                     }
-                    else {
-                        throw new CidadeExcecao("Coluna nao encontrada");
-                    }
                 }
             }
             contador++;
-            String palavraDaColuna = linha[coluna];
+            String palavraDaColuna = linha[coluna].toLowerCase();
             if (palavraDaColuna.contains(palavraQueProcuro)){
                 stringsDaquelaColuna.add(palavraDaColuna);
             }
@@ -61,13 +89,9 @@ public class CSVUtil {
     public static void main (String[] args) throws IOException, CsvValidationException {
         CSVUtil util = new CSVUtil();
 
+        int i = util.registroPorColunaCSV("uf");
 
+        System.out.println(i);
 
-        List<String> palavrasDaquelaColuna = util.lerColunaCSV
-                ("no_accents", "Sao");
-
-        for (String s : palavrasDaquelaColuna) {
-            System.out.println(s);
-        }
     }
 }

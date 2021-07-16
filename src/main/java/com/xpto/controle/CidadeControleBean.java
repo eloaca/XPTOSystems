@@ -1,5 +1,6 @@
 package com.xpto.controle;
 
+import com.opencsv.exceptions.CsvValidationException;
 import com.xpto.dominio.Cidade;
 import com.xpto.excecao.CidadeExcecao;
 import com.xpto.repositorio.CidadeRepositorio;
@@ -101,8 +102,7 @@ public class CidadeControleBean implements CidadeControle {
 
     @Override
     public void salvarCidadesCsv() throws IOException, SQLException {
-        String file = "src/main/resources/Cidades.csv";
-        List<Cidade> cidades = util.lerEExtrairCSV(file);
+        List<Cidade> cidades = util.lerEExtrairCSV();
         for (Cidade c : cidades) {
             adicionarNovaCidade(c);
         }
@@ -110,10 +110,32 @@ public class CidadeControleBean implements CidadeControle {
     }
 
     @Override
-    public List<Cidade> lerArquivoCSV(String csv) {
+    public List<Cidade> lerArquivoCSV() {
         try {
-            return util.lerEExtrairCSV(csv);
+            return util.lerEExtrairCSV();
         } catch (IOException e) {
+            throw new CidadeExcecao("Não foi possivel concluir esta acao: "+e.getMessage());
+        }
+    }
+
+    @Override
+    public List<String> stringPorColuna(String colunaQueEuQuero, String palavraQueProcuro) {
+        try {
+            return util.lerColunaEFiltrarStringCSV(colunaQueEuQuero.toLowerCase(), palavraQueProcuro.toLowerCase());
+        } catch (IOException e) {
+            throw new CidadeExcecao("Não foi possivel concluir esta acao: "+e.getMessage());
+        } catch (CsvValidationException e) {
+            throw new CidadeExcecao("Não foi possivel concluir esta acao: "+e.getMessage());
+        }
+    }
+
+    @Override
+    public int registroPorColuna(String colunaQueEuQuero) {
+        try {
+            return util.registroPorColunaCSV(colunaQueEuQuero);
+        } catch (IOException e) {
+            throw new CidadeExcecao("Não foi possivel concluir esta acao: "+e.getMessage());
+        } catch (CsvValidationException e) {
             throw new CidadeExcecao("Não foi possivel concluir esta acao: "+e.getMessage());
         }
     }

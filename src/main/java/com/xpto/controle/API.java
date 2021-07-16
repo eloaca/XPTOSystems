@@ -4,7 +4,6 @@ import com.xpto.excecao.CidadeExcecao;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ejb.EJB;
@@ -86,9 +85,27 @@ public class API {
     }
 
     @GetMapping("/lerArquivoCSV")
-    public Object lerArquivoCSV(@RequestParam("arquivo") String arquivo){
+    public Object lerArquivoCSV(){
         try {
-            return cidadeControle.lerArquivoCSV(arquivo);
+            return cidadeControle.lerArquivoCSV();
+        } catch (CidadeExcecao e){
+            return e.getMensagemExcecao();
+        }
+    }
+
+    @GetMapping("/stringPorColuna/{a}/{b}")
+    public Object colunaStringCSV(@PathVariable String a, @PathVariable String b){
+        try {
+            return cidadeControle.stringPorColuna(a, b);
+        } catch (CidadeExcecao e){
+            return e.getMensagemExcecao();
+        }
+    }
+
+    @GetMapping("/registroPorColuna/{a}")
+    public Object colunaRegistro(@PathVariable String a){
+        try {
+            return cidadeControle.registroPorColuna(a);
         } catch (CidadeExcecao e){
             return e.getMensagemExcecao();
         }
