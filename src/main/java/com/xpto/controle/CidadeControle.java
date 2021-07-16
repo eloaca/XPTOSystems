@@ -29,4 +29,6 @@ public interface CidadeControle {
     Long quantidadeDeRegistro();
 
     void salvarCidadesCsv() throws IOException, SQLException;
+
+    List<Cidade> lerArquivoCSV(String csv);
 }

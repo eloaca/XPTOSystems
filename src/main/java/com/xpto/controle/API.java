@@ -4,6 +4,7 @@ import com.xpto.excecao.CidadeExcecao;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ejb.EJB;
@@ -82,6 +83,15 @@ public class API {
     @GetMapping("/deletarCidade/{idIBGE}")
     public Object deletarUmaCidade(@PathVariable int idIBGE){
         return cidadeControle.deletarCidade(idIBGE);
+    }
+
+    @GetMapping("/lerArquivoCSV")
+    public Object lerArquivoCSV(@RequestParam("arquivo") String arquivo){
+        try {
+            return cidadeControle.lerArquivoCSV(arquivo);
+        } catch (CidadeExcecao e){
+            return e.getMensagemExcecao();
+        }
     }
 
 }

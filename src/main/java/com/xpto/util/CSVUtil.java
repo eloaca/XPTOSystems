@@ -12,9 +12,8 @@ import java.util.List;
 
 public class CSVUtil {
 
-    public List<Cidade> lerEExtrairCSV() throws IOException {
+    public List<Cidade> lerEExtrairCSV(String file) throws IOException {
 
-        String file = "src/main/resources/Cidades.csv";
         Reader reader = Files.newBufferedReader(Paths.get(file));
         CsvToBean<Cidade> csvToBean = new CsvToBeanBuilder(reader)
                 .withType(Cidade.class)

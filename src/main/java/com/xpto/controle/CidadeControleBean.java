@@ -7,7 +7,6 @@ import com.xpto.util.CSVUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.PersistenceException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,6 +18,8 @@ public class CidadeControleBean implements CidadeControle {
 
     @Autowired
     private CidadeRepositorio cidadeRepositorio;
+
+    private CSVUtil util = new CSVUtil();
 
     @Override
     public List<String> cidadesQueSaoCapitais() throws CidadeExcecao {
@@ -100,12 +101,21 @@ public class CidadeControleBean implements CidadeControle {
 
     @Override
     public void salvarCidadesCsv() throws IOException, SQLException {
-        CSVUtil util = new CSVUtil();
-        List<Cidade> cidades = util.lerEExtrairCSV();
+        String file = "src/main/resources/Cidades.csv";
+        List<Cidade> cidades = util.lerEExtrairCSV(file);
         for (Cidade c : cidades) {
             adicionarNovaCidade(c);
         }
 
+    }
+
+    @Override
+    public List<Cidade> lerArquivoCSV(String csv) {
+        try {
+            return util.lerEExtrairCSV(csv);
+        } catch (IOException e) {
+            throw new CidadeExcecao("Não foi possivel concluir esta acao: "+e.getMessage());
+        }
     }
 
     private List<Cidade> getCidades() {
