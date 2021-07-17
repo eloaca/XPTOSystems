@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ejb.EJB;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/xpto")
@@ -114,6 +115,15 @@ public class API {
             return gson.toJson(cidadeControle.registroPorColuna(a));
         } catch (CidadeExcecao e){
             return e.getMensagemExcecao();
+        }
+    }
+
+    @GetMapping("/distanciaEntreCidades")
+    public String distanciaEntreCidades() {
+        try {
+            return gson.toJson(cidadeControle.distanciaEntreCidade());
+        } catch (IOException e) {
+            return e.getMessage();
         }
     }
 

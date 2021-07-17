@@ -64,6 +64,11 @@ public class Cidade implements Serializable {
         this.mesoregion = mesoregion;
     }
 
+    public static Cidade getCidade(Cidade c){
+        return new Cidade(c.getIbge_id(), c.getUf(), c.getName(), c.isCapital(), c.getLon(), c.getLat(),
+                c.getNo_accents(), c.getAlternative_names(), c.getMicroregion(), c.getMesoregion());
+    }
+
     public int getIbge_id() {
         return ibge_id;
     }

@@ -97,13 +97,13 @@ public class CidadeRepositorioBean implements CidadeRepositorio {
     }
 
     @Override
-    public Long qtoDeRegistros() {
+    public int qtoDeRegistros() {
         StringBuilder jpql = new StringBuilder()
                 .append("SELECT COUNT(*) FROM Cidade c");
         try {
-            return (Long) em.createQuery(jpql.toString()).getSingleResult();
+            return (int) em.createQuery(jpql.toString()).getSingleResult();
         } catch (NoResultException e) {
-            return null;
+            return -1;
         }
     }
 }

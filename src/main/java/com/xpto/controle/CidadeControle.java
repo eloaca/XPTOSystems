@@ -1,6 +1,7 @@
 package com.xpto.controle;
 
 import com.xpto.dominio.Cidade;
+import com.xpto.dominio.CidadeDistancia;
 import com.xpto.excecao.CidadeExcecao;
 
 import javax.ejb.Local;
@@ -35,4 +36,6 @@ public interface CidadeControle {
     List<String> stringPorColuna(String colunaQueEuQuero, String palavraQueProcuro);
 
     int registroPorColuna(String colunaQueEuQuero);
+
+    CidadeDistancia distanciaEntreCidade() throws IOException;
 }
