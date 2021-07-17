@@ -86,12 +86,4 @@ public class CSVUtil {
         return stringsDaquelaColuna;
     }
 
-    public static void main (String[] args) throws IOException, CsvValidationException {
-        CSVUtil util = new CSVUtil();
-
-        int i = util.registroPorColunaCSV("uf");
-
-        System.out.println(i);
-
-    }
 }
