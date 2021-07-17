@@ -1,6 +1,9 @@
 package com.xpto.controle;
 
+import com.google.gson.Gson;
 import com.xpto.excecao.CidadeExcecao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +17,9 @@ public class API {
 
     @EJB
     CidadeControle cidadeControle;
+
+    @Autowired
+    private Gson gson;
 /*
     @GetMapping("salvarCidadesCsv")
     public Object salvarCsv(){
@@ -26,86 +32,86 @@ public class API {
     }
  */
     @GetMapping("/cidadesQueSaoCapitais")
-    public Object cidadesQueSaoCapitais() {
+    public String cidadesQueSaoCapitais() {
         try {
-            return cidadeControle.cidadesQueSaoCapitais();
+            return gson.toJson(cidadeControle.cidadesQueSaoCapitais());
         } catch (CidadeExcecao e) {
             return e.getMensagemExcecao();
         }
     }
 
     @GetMapping("/estadoMaiorEMenor")
-    public Object estadoMaiorEMenor() {
+    public String estadoMaiorEMenor() {
         try {
-            return cidadeControle.estadoMaiorEMenor();
+            return gson.toJson(cidadeControle.estadoMaiorEMenor());
         } catch (CidadeExcecao e){
             return e.getMensagemExcecao();
         }
     }
 
     @GetMapping("/cidadesPorEstado")
-    public Object cidadesPorEstado() {
+    public String cidadesPorEstado() {
         try {
-            return cidadeControle.cidadesPorEstado();
+            return gson.toJson(cidadeControle.cidadesPorEstado());
         } catch (CidadeExcecao e){
             return e.getMensagemExcecao();
         }
     }
 
     @GetMapping("/quantidadeDeRegistros")
-    public Object quantidadeDeRegistros(){
+    public String quantidadeDeRegistros(){
         try {
-            return cidadeControle.quantidadeDeRegistro();
+            return gson.toJson(cidadeControle.quantidadeDeRegistro());
         } catch (CidadeExcecao e){
             return e.getMensagemExcecao();
         }
     }
 
     @GetMapping("/dadosCidadeById/{idIBGE}")
-    public Object dadosCidadeById(@PathVariable int idIBGE){
+    public String dadosCidadeById(@PathVariable int idIBGE){
         try {
-            return cidadeControle.dadosCidadeByIdIBGE(idIBGE);
+            return gson.toJson(cidadeControle.dadosCidadeByIdIBGE(idIBGE));
         } catch (CidadeExcecao e){
             return e.getMensagemExcecao();
         }
     }
 
     @GetMapping("/dadosCidadeByUF/{uf}")
-    public Object dadosCidadeByUF(@PathVariable String uf){
+    public String dadosCidadeByUF(@PathVariable String uf){
         try {
-            return cidadeControle.cidadesPorEstado(uf);
+            return gson.toJson(cidadeControle.cidadesPorEstado(uf));
         } catch (CidadeExcecao e){
             return e.getMensagemExcecao();
         }
     }
 
-    @GetMapping("/deletarCidade/{idIBGE}")
-    public Object deletarUmaCidade(@PathVariable int idIBGE){
-        return cidadeControle.deletarCidade(idIBGE);
+    @DeleteMapping("/deletarCidade/{idIBGE}")
+    public String deletarUmaCidade(@PathVariable int idIBGE){
+        return gson.toJson(cidadeControle.deletarCidade(idIBGE));
     }
 
     @GetMapping("/lerArquivoCSV")
-    public Object lerArquivoCSV(){
+    public String lerArquivoCSV(){
         try {
-            return cidadeControle.lerArquivoCSV();
+            return gson.toJson(cidadeControle.lerArquivoCSV());
         } catch (CidadeExcecao e){
             return e.getMensagemExcecao();
         }
     }
 
     @GetMapping("/stringPorColuna/{a}/{b}")
-    public Object colunaStringCSV(@PathVariable String a, @PathVariable String b){
+    public String colunaStringCSV(@PathVariable String a, @PathVariable String b){
         try {
-            return cidadeControle.stringPorColuna(a, b);
+            return gson.toJson(cidadeControle.stringPorColuna(a, b));
         } catch (CidadeExcecao e){
             return e.getMensagemExcecao();
         }
     }
 
     @GetMapping("/registroPorColuna/{a}")
-    public Object colunaRegistro(@PathVariable String a){
+    public String colunaRegistro(@PathVariable String a){
         try {
-            return cidadeControle.registroPorColuna(a);
+            return gson.toJson(cidadeControle.registroPorColuna(a));
         } catch (CidadeExcecao e){
             return e.getMensagemExcecao();
         }
