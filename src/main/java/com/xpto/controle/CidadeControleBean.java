@@ -149,27 +149,27 @@ public class CidadeControleBean implements CidadeControle {
     }
 
     public CidadeDistancia distanciaEntreCidade() throws IOException {
-        Cidade[] cidades = util.lerEExtrairCSV().toArray(new Cidade[0]);
+        List<Cidade> cidades = util.lerEExtrairCSV();
 
-        if (cidades.length < 3){
-            switch (cidades.length){
+        if (cidades.size() < 3){
+            switch (cidades.size()){
                 case 1:
-                    return new CidadeDistancia(cidades[0], null, BigDecimal.ZERO);
+                    return new CidadeDistancia(cidades.get(0), null, BigDecimal.ZERO);
                 case 2:
-                    return new CidadeDistancia(cidades[0], cidades[1], this.calculoDistanciaEntreCidades(cidades[0], cidades[1]));
+                    return new CidadeDistancia(cidades.get(0), cidades.get(1), this.calculoDistanciaEntreCidades(cidades.get(0), cidades.get(1)));
             }
         }
 
         Cidade a = null, b = null;
         BigDecimal distancia = BigDecimal.ZERO, d;
 
-        for (int y = 0; y < cidades.length - 1; y++){
-            for (int z = y; z < cidades.length; z++){
-                d = calculoDistanciaEntreCidades(cidades[z], cidades[y]);
+        for (int y = 0; y < cidades.size() - 1; y++){
+            for (int z = y; z < cidades.size(); z++){
+                d = calculoDistanciaEntreCidades(cidades.get(z), cidades.get(y));
                 if (d.compareTo(distancia) > 0){
                     distancia = d;
-                    a = cidades[y];
-                    b = cidades[z];
+                    a = cidades.get(y);
+                    b = cidades.get(z);
                 }
             }
         }
