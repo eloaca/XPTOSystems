@@ -28,7 +28,7 @@ public class CidadeControleBean implements CidadeControle {
     @Autowired
     private CidadeRepositorio cidadeRepositorio;
 
-    private CSVUtil util = new CSVUtil();
+    private final CSVUtil util = new CSVUtil();
 
     @Override
     public List<String> cidadesQueSaoCapitais() throws CidadeExcecao {
@@ -94,9 +94,7 @@ public class CidadeControleBean implements CidadeControle {
 
     @Override
     public boolean deletarCidade(int id_ibge) {
-        if (cidadeRepositorio.deletarCidade(id_ibge) == 1)
-            return true;
-        return false;
+        return cidadeRepositorio.deletarCidade(id_ibge) == 1;
     }
 
     @Override
@@ -130,9 +128,7 @@ public class CidadeControleBean implements CidadeControle {
     public List<String> stringPorColuna(String colunaQueEuQuero, String palavraQueProcuro) {
         try {
             return util.lerColunaEFiltrarStringCSV(colunaQueEuQuero.toLowerCase(), palavraQueProcuro.toLowerCase());
-        } catch (IOException e) {
-            throw new CidadeExcecao("Não foi possivel concluir esta acao: "+e.getMessage());
-        } catch (CsvValidationException e) {
+        } catch (IOException | CsvValidationException e) {
             throw new CidadeExcecao("Não foi possivel concluir esta acao: "+e.getMessage());
         }
     }
@@ -141,9 +137,7 @@ public class CidadeControleBean implements CidadeControle {
     public int registroPorColuna(String colunaQueEuQuero) {
         try {
             return util.registroPorColunaCSV(colunaQueEuQuero);
-        } catch (IOException e) {
-            throw new CidadeExcecao("Não foi possivel concluir esta acao: "+e.getMessage());
-        } catch (CsvValidationException e) {
+        } catch (IOException | CsvValidationException e) {
             throw new CidadeExcecao("Não foi possivel concluir esta acao: "+e.getMessage());
         }
     }
