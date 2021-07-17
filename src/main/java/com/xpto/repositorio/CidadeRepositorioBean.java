@@ -53,10 +53,11 @@ public class CidadeRepositorioBean implements CidadeRepositorio {
     }
 
     @Override
-    public void adicionarCidade(Cidade cidade) throws SQLException {
+    public Cidade adicionarCidade(Cidade cidade) throws SQLException {
         em.persist(cidade);
         em.merge(cidade);
         em.flush();
+        return cidade;
     }
 
     @Override
@@ -97,13 +98,13 @@ public class CidadeRepositorioBean implements CidadeRepositorio {
     }
 
     @Override
-    public int qtoDeRegistros() {
+    public Long qtoDeRegistros() {
         StringBuilder jpql = new StringBuilder()
                 .append("SELECT COUNT(*) FROM Cidade c");
         try {
-            return (int) em.createQuery(jpql.toString()).getSingleResult();
+            return (Long) em.createQuery(jpql.toString()).getSingleResult();
         } catch (NoResultException e) {
-            return -1;
+            return null;
         }
     }
 }

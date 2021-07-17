@@ -88,8 +88,8 @@ public class CidadeControleBean implements CidadeControle {
     }
 
     @Override
-    public void adicionarNovaCidade(Cidade cidade) throws SQLException {
-        cidadeRepositorio.adicionarCidade(cidade);
+    public Cidade adicionarNovaCidade(Cidade cidade) throws SQLException {
+        return cidadeRepositorio.adicionarCidade(cidade);
     }
 
     @Override

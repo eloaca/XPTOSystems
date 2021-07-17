@@ -13,7 +13,7 @@ public interface CidadeRepositorio {
 
     List<Cidade> buscarCidadesPorParametro(String uf);
 
-    void adicionarCidade(Cidade cidade) throws SQLException;
+    Cidade adicionarCidade(Cidade cidade) throws SQLException;
 
     int deletarCidade(int idIBGE);
 

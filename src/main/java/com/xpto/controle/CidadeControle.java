@@ -23,7 +23,7 @@ public interface CidadeControle {
 
     List<String> cidadesPorEstado(String uf);
 
-    void adicionarNovaCidade(Cidade cidade) throws SQLException;
+    Cidade adicionarNovaCidade(Cidade cidade) throws SQLException;
 
     boolean deletarCidade(int id_ibge);
 

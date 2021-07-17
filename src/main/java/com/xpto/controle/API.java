@@ -1,16 +1,21 @@
 package com.xpto.controle;
 
+import javax.validation.Valid;
 import com.google.gson.Gson;
+import com.xpto.dominio.Cidade;
 import com.xpto.excecao.CidadeExcecao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ejb.EJB;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/api/xpto")
@@ -123,6 +128,15 @@ public class API {
         try {
             return gson.toJson(cidadeControle.distanciaEntreCidade());
         } catch (IOException e) {
+            return e.getMessage();
+        }
+    }
+
+    @PostMapping("/novaCidade")
+    public String novaCidade(@RequestBody @Valid Cidade cidade) {
+        try {
+            return gson.toJson(cidadeControle.adicionarNovaCidade(cidade));
+        } catch (SQLException e) {
             return e.getMessage();
         }
     }
