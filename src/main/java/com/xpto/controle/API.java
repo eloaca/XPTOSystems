@@ -26,7 +26,7 @@ public class API {
 
     @Autowired
     private Gson gson;
-/*
+
     @GetMapping("salvarCidadesCsv")
     public Object salvarCsv(){
         try {
@@ -36,7 +36,7 @@ public class API {
         }
         return "Arquivo CSV salvo com sucesso";
     }
- */
+
     @GetMapping("/cidadesQueSaoCapitais")
     public String cidadesQueSaoCapitais() {
         try {
