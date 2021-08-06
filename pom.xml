@@ -127,7 +127,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.16.2</version>
+			<version>1.18.20</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -158,10 +158,16 @@
 
 	<profiles>
 		<profile>
-			<id>tst</id>
+			<id>local</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
+			<properties>
+				<spring.profiles.active>local</spring.profiles.active>
+			</properties>
+		</profile>
+		<profile>
+			<id>tst</id>
 			<properties>
 				<spring.profiles.active>tst</spring.profiles.active>
 			</properties>
