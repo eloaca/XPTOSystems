@@ -9,6 +9,7 @@ import javax.ejb.Local;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Local
 public interface CidadeControle {
@@ -19,13 +20,13 @@ public interface CidadeControle {
 
     List<Object> cidadesPorEstado() throws CidadeExcecao;
 
-    Cidade dadosCidadeByIdIBGE(int id_ibge) throws CidadeExcecao;
+    Optional<Cidade> dadosCidadeByIdIBGE(int id_ibge) throws CidadeExcecao;
 
     List<String> cidadesPorEstado(String uf);
 
     Cidade adicionarNovaCidade(Cidade cidade) throws SQLException;
 
-    boolean deletarCidade(int id_ibge);
+    void deletarCidade(int id_ibge);
 
     Long quantidadeDeRegistro();
 

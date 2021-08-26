@@ -11,14 +11,13 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 import static org.easymock.EasyMock.anyString;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
@@ -69,10 +68,10 @@ public class CidadeControleBeanTest {
 
     @Test
     public void testDadosCidadeByIdIBGE() {
-        Cidade cidadeMock = getCidadeMock();
+        Optional<Cidade> cidadeMock = Optional.of(getCidadeMock());
         expect(bean.dadosCidadeByIdIBGE(EasyMock.anyInt())).andReturn(cidadeMock);
         replay(bean);
-        Cidade cidade = bean.dadosCidadeByIdIBGE(EasyMock.anyInt());
+        Optional<Cidade> cidade = bean.dadosCidadeByIdIBGE(EasyMock.anyInt());
         verify(bean);
         Assert.assertEquals(cidade, cidadeMock);
     }
@@ -85,16 +84,6 @@ public class CidadeControleBeanTest {
         Cidade cidade = bean.adicionarNovaCidade(cidadeMock);
         verify(bean);
         Assert.assertEquals(cidade, cidadeMock);
-    }
-
-    @Test
-    public void testDeletarCidade() {
-        int id = 1;
-        expect(bean.deletarCidade(id)).andReturn(true);
-        replay(bean);
-        boolean retorno = bean.deletarCidade(id);
-        verify(bean);
-        Assert.assertTrue(retorno);
     }
 
     @Test

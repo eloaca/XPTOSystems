@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.xpto.dominio.Cidade.getCidade;
 import static java.lang.Math.acos;
@@ -65,12 +66,8 @@ public class CidadeControleBean implements CidadeControle {
     }
 
     @Override
-    public Cidade dadosCidadeByIdIBGE(int id_ibge) throws CidadeExcecao {
-        Cidade c = cidadeRepositorio.buscarCidadePeloIBGEId(id_ibge);
-        if (c == null) {
-            throw new CidadeExcecao("Nao foi encontrado nenhum resultado para sua busca");
-        } else
-            return c;
+    public Optional<Cidade> dadosCidadeByIdIBGE(int id_ibge) throws CidadeExcecao {
+        return cidadeRepositorio.findById(id_ibge);
     }
 
     @Override
@@ -89,12 +86,12 @@ public class CidadeControleBean implements CidadeControle {
 
     @Override
     public Cidade adicionarNovaCidade(Cidade cidade) throws SQLException {
-        return cidadeRepositorio.adicionarCidade(cidade);
+        return cidadeRepositorio.save(cidade);
     }
 
     @Override
-    public boolean deletarCidade(int id_ibge) {
-        return cidadeRepositorio.deletarCidade(id_ibge) == 1;
+    public void deletarCidade(int id_ibge) {
+        cidadeRepositorio.deleteById(id_ibge);
     }
 
     @Override
@@ -189,6 +186,6 @@ public class CidadeControleBean implements CidadeControle {
     }
 
     private List<Cidade> getCidades() {
-        return cidadeRepositorio.buscarTodasAsCidades();
+        return cidadeRepositorio.findAll();
     }
 }
