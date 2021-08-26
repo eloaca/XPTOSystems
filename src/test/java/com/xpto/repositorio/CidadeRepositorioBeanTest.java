@@ -7,7 +7,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,18 +17,18 @@ import static org.easymock.EasyMock.verify;
 
 public class CidadeRepositorioBeanTest {
 
-    private CidadeRepositorioBean beanMock;
+    private CidadeRepositorio beanMock;
 
     @BeforeMethod
     private void init(){
-        beanMock = EasyMock.createNiceMock(CidadeRepositorioBean.class);
+        beanMock = EasyMock.createNiceMock(CidadeRepositorio.class);
     }
 
     @Test
     public void testBuscarCidadePeloIBGEId() {
-        expect(beanMock.buscarCidadePeloIBGEId(EasyMock.anyInt())).andReturn(getCidadeMock());
+        expect(beanMock.getById(EasyMock.anyInt())).andReturn(getCidadeMock());
         replay(beanMock);
-        Cidade c = beanMock.buscarCidadePeloIBGEId(1);
+        Cidade c = beanMock.getById(1);
         verify(beanMock);
         Assert.assertNotNull(c);
     }
@@ -38,9 +37,9 @@ public class CidadeRepositorioBeanTest {
     public void testBuscarTodasAsCidades() {
         List<Cidade> cidades = new ArrayList<>();
         cidades.add(getCidade());
-        expect(beanMock.buscarTodasAsCidades()).andReturn(cidades);
+        expect(beanMock.findAll()).andReturn(cidades);
         replay(beanMock);
-        cidades = beanMock.buscarTodasAsCidades();
+        cidades = beanMock.findAll();
         verify(beanMock);
         Assert.assertNotNull(cidades);
     }
@@ -57,21 +56,12 @@ public class CidadeRepositorioBeanTest {
     }
 
     @Test
-    public void testAdicionarCidade() throws SQLException {
-        expect(beanMock.adicionarCidade(EasyMock.anyObject())).andReturn(getCidadeMock());
+    public void testAdicionarCidade() {
+        expect(beanMock.save(EasyMock.anyObject())).andReturn(getCidadeMock());
         replay(beanMock);
-        Cidade c = beanMock.adicionarCidade(getCidade());
+        Cidade c = beanMock.save(getCidade());
         verify(beanMock);
         Assert.assertNotNull(c);
-    }
-
-    @Test
-    public void testDeletarCidade() {
-        expect(beanMock.deletarCidade(EasyMock.anyInt())).andReturn(1);
-        replay(beanMock);
-        int i = beanMock.deletarCidade(1);
-        verify(beanMock);
-        Assert.assertNotNull(i);
     }
 
     @Test
@@ -107,10 +97,9 @@ public class CidadeRepositorioBeanTest {
     }
 
     private Cidade getCidade() {
-        Cidade c = new Cidade(
+        return new Cidade(
                 1, "SP", "Maldivas", false, BigDecimal.valueOf(1L), BigDecimal.valueOf(-1L),
                 "Maldivas", "", "Araras", "Franca");
-        return c;
     }
 
     private Cidade getCidadeMock() {
