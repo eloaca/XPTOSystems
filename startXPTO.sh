@@ -4,7 +4,7 @@ AMBIENTE=""
 DEBUG="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
 RUN="mvn spring-boot:run"
 
-echo "Selecione o ambiente que ira rodar a aplicacao: local, tst ou prod (Padrão: local)"
+echo "Selecione o ambiente que ira rodar a aplicacao: local ou h2(Padrão: local)"
 read AMBIENTE
 
 if [ -z $AMBIENTE ]; then
